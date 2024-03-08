@@ -51,6 +51,7 @@ class Server(ABC):
 
     def accept_loop(self):
         try:
+            print("Waiting for data...")
             while self.__server_started:
                 data = self.accept()
                 #print("Data received!")

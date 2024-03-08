@@ -3,10 +3,10 @@ import socket
 from scapy.all import *
 
 from Servers.TestServer import TestServer
-from Servers.Layer3PortServer import Layer3PortServer
+from Servers.TcpPortServer import TcpPortServer
 
 def main():
-    server = Layer3PortServer("127.0.0.1", 42069)
+    server = TcpPortServer("127.0.0.1", 42069)
     queue = bytearray()
     with server:
         print("Waiting for data...")
