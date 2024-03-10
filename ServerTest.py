@@ -2,13 +2,13 @@ import socket
 
 from scapy.all import *
 
-from Servers.TestServer import TestServer
 from Servers.TcpPortServer import TcpPortServer
 from Servers.UdpPortServer import UdpPortServer
+from Servers.HttpServer import HttpServer
 
 
 def main():
-    server = UdpPortServer("127.0.0.1", 42069)
+    server = HttpServer("127.0.0.1", 42069)
     with server:
         print("Waiting for data...")
         data = server.receive()

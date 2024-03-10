@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from queue import Queue
+from threading import Thread
 
 
 class Server(ABC):
@@ -12,6 +13,7 @@ class Server(ABC):
     def __init__(self, ip: str, port: int):
         self.ip: str = ip
         self.port: int = port
+        self._server_thread: Thread = None
         self._server_started: bool = False
         self._received_data: Queue[bytes] = Queue()
 
@@ -23,10 +25,17 @@ class Server(ABC):
         if self._server_started:
             self.stop()
 
-    @abstractmethod
     def start(self):
         """
             Start server thread which listens for incoming packets
+        """
+        self._server_thread = Thread(target=self._server_start, daemon=True)
+        self._server_thread.start()
+
+    @abstractmethod
+    def _server_start(self):
+        """
+            Start the server to listen for incoming packets
         """
         raise NotImplementedError
 
