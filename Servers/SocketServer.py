@@ -6,6 +6,7 @@ from threading import Thread
 from typing import Iterator
 
 from scapy.packet import Packet
+from pydivert import WinDivert
 
 from Servers.Server import Server
 
@@ -66,6 +67,14 @@ class SocketServer(Server, ABC):
             packet = packet.payload
             yield packet
 
+    def _drop_outbound_rst(self):
+        with WinDivert("outbound and tcp.Rst") as w:
+            for _ in w:
+                if not self._server_started:
+                    break   # This only works after the server is bound
+                pass
+                #print("Dropped a packet with RST flag")
+                # The packet is dropped by not re-injecting it.
 
 if __name__ == "__main__":
     pass

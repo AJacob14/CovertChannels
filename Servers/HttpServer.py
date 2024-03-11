@@ -59,10 +59,6 @@ class HttpServer(Server):
 
 @app.route("/shutdown", methods=["POST"])
 def shutdown():
-    # shutdown_func = request.environ.get("werkzeug.server.shutdown")
-    # if shutdown_func is None:
-    #     raise RuntimeError("Not running with the Werkzeug Server")
-    # shutdown_func()
     os.kill(os.getpid(), signal.SIGINT)
     return jsonify({"message": "Server shutting down..."}), 200
 
