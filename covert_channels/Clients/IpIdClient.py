@@ -7,7 +7,7 @@ from enum import IntEnum
 from scapy.all import *
 from scapy.layers.inet import IP, TCP
 
-from Clients.Client import Client
+from covert_channels.Clients.Client import Client
 
 class ConnectionState(IntEnum):
     START = 0

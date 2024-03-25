@@ -5,7 +5,7 @@ import socket
 from scapy.all import *
 from scapy.layers.inet import IP, UDP
 
-from Servers.SocketServer import SocketServer
+from covert_channels.Servers.SocketServer import SocketServer
 
 
 class UdpPortServer(SocketServer):

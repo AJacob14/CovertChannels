@@ -6,7 +6,7 @@ import socket
 from scapy.all import *
 from scapy.layers.inet import IP, TCP
 
-from Servers.SocketServer import SocketServer
+from covert_channels.Servers.SocketServer import SocketServer
 
 class IpIdServer(SocketServer):
     def __init__(self, ip: str, port: int):

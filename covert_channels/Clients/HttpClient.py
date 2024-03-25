@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import requests
 
-from Clients.Client import Client
+from covert_channels.Clients.Client import Client
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"

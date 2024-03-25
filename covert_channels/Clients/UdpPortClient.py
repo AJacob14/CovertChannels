@@ -3,7 +3,7 @@ from __future__ import annotations
 from scapy.all import *
 from scapy.layers.inet import IP, UDP
 
-from Clients.Client import Client
+from covert_channels.Clients.Client import Client
 
 class UdpPortClient(Client):
     def __init__(self, target_ip: str, target_port: int):

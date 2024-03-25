@@ -8,7 +8,7 @@ from typing import Iterator
 from scapy.packet import Packet
 from pydivert import WinDivert
 
-from Servers.Server import Server
+from covert_channels.Servers.Server import Server
 
 
 class SocketServer(Server, ABC):

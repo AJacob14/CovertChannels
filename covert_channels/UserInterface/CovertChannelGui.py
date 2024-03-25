@@ -18,9 +18,9 @@ from PyQt6.QtWidgets import QApplication, QLineEdit, QWidget, QFormLayout, QPush
     QTextEdit, QTableWidget, QTableWidgetItem, QLabel, QCheckBox, QFileDialog, QComboBox, QMessageBox, \
     QTextBrowser
 
-from ClientServer import ClientServer, ClientServerType
-from Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
-from Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
+from covert_channels.UserInterface import ClientServer, ClientServerType
+from covert_channels.Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
+from covert_channels.Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
 
 class CovertChannelGui(QWidget):
     def __init__(self, parent: QWidget | None = None):
@@ -61,9 +61,12 @@ class CovertChannelGui(QWidget):
 
         # endregion
 
-if __name__ == "__main__":
+def run_gui():
     app = QApplication(sys.argv)
     win = CovertChannelGui()
 
     win.show()
     sys.exit(app.exec())
+
+if __name__ == "__main__":
+    run_gui()

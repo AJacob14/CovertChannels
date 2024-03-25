@@ -5,7 +5,7 @@ import sys
 from scapy.all import *
 from scapy.layers.inet import IP, TCP
 
-from Clients.Client import Client
+from covert_channels.Clients.Client import Client
 
 class TcpPortClient(Client):
     """

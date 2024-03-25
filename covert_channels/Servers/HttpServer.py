@@ -8,7 +8,7 @@ from queue import Queue
 import requests
 from flask import Flask, request, jsonify
 
-from Servers.Server import Server
+from covert_channels.Servers.Server import Server
 
 app = Flask(__name__)
 

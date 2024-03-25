@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from enum import IntEnum
 
-from Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
-from Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
+from covert_channels.Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
+from covert_channels.Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
 
 class ClientServer:
     def __init__(self, ip: str, port: int, type_: ClientServerType):
