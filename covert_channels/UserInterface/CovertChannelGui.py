@@ -18,7 +18,7 @@ from PyQt6.QtWidgets import QApplication, QLineEdit, QWidget, QFormLayout, QPush
     QTextEdit, QTableWidget, QTableWidgetItem, QLabel, QCheckBox, QFileDialog, QComboBox, QMessageBox, \
     QTextBrowser
 
-from UserInterface import ClientServer, ClientServerType
+from ClientServer import ClientServer, ClientServerType
 from Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
 from Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
 
@@ -47,9 +47,15 @@ class CovertChannelGui(QWidget):
 
         # region GUI Construction
 
-
+        hbox = QHBoxLayout()
+        self.message_box = QTextEdit()
+        self.message_box.setPlaceholderText("Enter message to send")
+        self.message_box.setFont(QFont("Arial", 12))
+        self.message_box.setFixedWidth(120)
+        hbox.addWidget(self.message_box)
 
         form_layout = QFormLayout()
+        form_layout.addRow(hbox)
         self.setLayout(form_layout)
         self.setWindowTitle(f"{self.title} {self.version}")
 

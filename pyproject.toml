@@ -1,0 +1,13 @@
+[project]
+name = "covert-channels"
+version = "1.0.0"
+authors = [
+  { name="Ashwin Jacob", email="ajacob14@iastate.edu" },
+]
+description = "Covert channels in Python"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[build-system]
+requires = ["flit_core >=3.4"]
+build-backend = "flit_core.buildapi"
