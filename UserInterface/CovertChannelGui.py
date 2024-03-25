@@ -5,7 +5,6 @@ import json
 import os
 import sys
 import threading
-from abc import ABC
 from datetime import datetime
 from queue import Queue
 from threading import Timer
@@ -19,6 +18,10 @@ from PyQt6.QtWidgets import QApplication, QLineEdit, QWidget, QFormLayout, QPush
     QTextEdit, QTableWidget, QTableWidgetItem, QLabel, QCheckBox, QFileDialog, QComboBox, QMessageBox, \
     QTextBrowser
 
+from UserInterface import ClientServer, ClientServerType
+from Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
+from Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
+
 class CovertChannelGui(QWidget):
     def __init__(self, parent: QWidget | None = None):
         super().__init__(parent)
@@ -27,6 +30,7 @@ class CovertChannelGui(QWidget):
 
         self.title: str = "Covert Channels"
         self.version: str = "v1.0.0"
+        self.client_server: ClientServer = None
 
         # endregion
 
