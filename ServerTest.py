@@ -2,10 +2,7 @@ import socket
 
 from scapy.all import *
 
-from Servers.TcpPortServer import TcpPortServer
-from Servers.UdpPortServer import UdpPortServer
-from Servers.HttpServer import HttpServer
-from Servers.IpIdServer import IpIdServer
+from Servers import TcpPortServer, UdpPortServer, HttpServer, IpIdServer
 
 
 def main():

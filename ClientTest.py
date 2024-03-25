@@ -1,8 +1,4 @@
-from Clients.TcpPortClient import TcpPortClient
-from Clients.UdpPortClient import UdpPortClient
-from Clients.HttpClient import HttpClient
-from Clients.IpIdClient import IpIdClient
-
+from Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
 
 def main():
     client = IpIdClient("127.0.0.1", 42069)
