@@ -9,6 +9,7 @@ class ClientServer:
     def __init__(self, ip: str, port: int, type_: ClientServerType):
         self.client: Client = None
         self.server: Server = None
+        self.type: ClientServerType = type_
         self.__construct_client_server(ip, port, type_)
 
     def __construct_client_server(self, ip: str, port: int, type_: ClientServerType):
