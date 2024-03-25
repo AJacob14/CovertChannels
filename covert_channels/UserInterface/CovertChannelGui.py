@@ -52,6 +52,7 @@ class CovertChannelGui(QWidget):
         self.message_box.setPlaceholderText("Enter message to send")
         self.message_box.setFont(QFont("Arial", 12))
         self.message_box.setFixedWidth(120)
+        self.message_box.setFixedHeight(100)
         hbox.addWidget(self.message_box)
 
         form_layout = QFormLayout()
