@@ -10,7 +10,16 @@ class ClientServer:
         self.client: Client = None
         self.server: Server = None
         self.type: ClientServerType = type_
+        self.__active: bool = False
         self.__construct_client_server(ip, port, type_)
+
+    @property
+    def active(self) -> bool:
+        return self.__active
+    
+    @active.setter
+    def active(self, value: bool):
+        self.__active = value
 
     def __construct_client_server(self, ip: str, port: int, type_: ClientServerType):
         match type_:
