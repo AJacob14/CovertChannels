@@ -2,7 +2,7 @@ import socket
 
 from scapy.all import *
 
-from Servers import TcpPortServer, UdpPortServer, HttpServer, IpIdServer
+from covert_channels.Servers import TcpPortServer, UdpPortServer, HttpServer, IpIdServer
 
 
 def main():

@@ -64,10 +64,17 @@ class CovertChannelGui(QWidget):
         self.message_box.setFont(QFont("Arial", 12))
         self.message_box.setFixedWidth(250)
         self.message_box.setFixedHeight(25)
+        channel_type_label = QLabel("Channel Type:")
+        self.channel_type_combo = QComboBox()
+        for channel_type in ClientServerType:
+            self.channel_type_combo.addItem(str(channel_type))
+        self.channel_type_combo.currentIndexChanged.connect(self.change_channel_type)
         message_btn = create_button("Send Message")
         self.channel_control_btn = create_button("Start")
-        self.channel_control_btn.clicked.connect(self.toggle_channel_active)
+        self.channel_control_btn.clicked.connect(self.toggle_channel_activeness)
         hbox.addWidget(self.message_box)
+        hbox.addWidget(channel_type_label)
+        hbox.addWidget(self.channel_type_combo)
         hbox.addWidget(message_btn)
         hbox.addWidget(self.channel_control_btn)
 
@@ -89,28 +96,25 @@ class CovertChannelGui(QWidget):
         if self.client_server is not None:
             self.client_server.active = value
 
-    def closeEvent(self, a0: QtGui.QCloseEvent | None):
+    def closeEvent(self, event: QtGui.QCloseEvent | None):
         if self.active:
             self.stop_channel()
         
         self.config.save_config()
-        
-        return super().closeEvent(a0)
+
+        return super().closeEvent(event)
 
     def initialize(self):
         self.ip = self.config.ip
         self.port = self.config.port
         self.client_server = ClientServer(self.ip, self.port, self.config.type)
-    
-    @staticmethod
-    def get_default_config() -> dict:
-        return {
-            "ip": "127.0.0.1",
-            "port": 42069,
-            "type": ClientServerType.HTTP
-        }
+        self.channel_type_combo.setCurrentIndex(self.config.type.value)
 
-    def toggle_channel_active(self):
+    def change_channel_type(self, index: int):
+        self.config.type = ClientServerType(index)
+        self.client_server = ClientServer(self.ip, self.port, self.config.type)
+
+    def toggle_channel_activeness(self):
         if self.active:
             self.stop_channel()
             self.channel_control_btn.setText("Start")
@@ -126,13 +130,15 @@ class CovertChannelGui(QWidget):
         if self.active:
             return
         
-        # TODO: Implement logic to start channel
+        self.channel_type_combo.setEnabled(False)
+        self.client_server.start()
 
     def stop_channel(self):
         if not self.active:
             return
         
-        # TODO: Implement logic to stop channel
+        self.channel_type_combo.setEnabled(True)
+        self.client_server.stop()
 
 def run_gui():
     app = QApplication(sys.argv)
