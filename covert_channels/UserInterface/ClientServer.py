@@ -66,9 +66,10 @@ class ClientServer:
 
     @staticmethod
     def _start_server(queue: Queue, server: Server):
-        while True:
-            data = server.receive()
-            queue.put(data)
+        with server:
+            while True:
+                data = server.receive()
+                queue.put(data)
 
 
 class ClientServerType(IntEnum):

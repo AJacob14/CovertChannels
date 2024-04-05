@@ -70,6 +70,7 @@ class CovertChannelGui(QWidget):
             self.channel_type_combo.addItem(str(channel_type))
         self.channel_type_combo.currentIndexChanged.connect(self.change_channel_type)
         message_btn = create_button("Send Message")
+        message_btn.clicked.connect(self.send_message)
         self.channel_control_btn = create_button("Start")
         self.channel_control_btn.clicked.connect(self.toggle_channel_activeness)
         hbox.addWidget(self.message_box)
@@ -109,6 +110,20 @@ class CovertChannelGui(QWidget):
         self.port = self.config.port
         self.client_server = ClientServer(self.ip, self.port, self.config.type)
         self.channel_type_combo.setCurrentIndex(self.config.type.value)
+
+    def send_message(self):
+        if not self.active:
+            return
+
+        message = self.message_box.text()
+        if not message:
+            return
+
+        data = message.encode()
+        response = self.client_server.send(data)
+        print(f"Sent: {message}")
+        print(f"Received: {response}")
+        self.message_box.clear()
 
     def change_channel_type(self, index: int):
         self.config.type = ClientServerType(index)
