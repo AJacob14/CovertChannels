@@ -58,6 +58,8 @@ class CovertChannelGui(QWidget):
 
         # region GUI Construction
 
+        form_layout = QFormLayout()
+
         hbox = QHBoxLayout()
         self.message_box = QLineEdit()
         self.message_box.setPlaceholderText("Enter message to send")
@@ -69,18 +71,24 @@ class CovertChannelGui(QWidget):
         for channel_type in ClientServerType:
             self.channel_type_combo.addItem(str(channel_type))
         self.channel_type_combo.currentIndexChanged.connect(self.change_channel_type)
-        message_btn = create_button("Send Message")
-        message_btn.clicked.connect(self.send_message)
+        self.message_btn = create_button("Send Message")
+        self.message_btn.clicked.connect(self.send_message)
+        self.message_btn.setDisabled(True)
         self.channel_control_btn = create_button("Start")
         self.channel_control_btn.clicked.connect(self.toggle_channel_activeness)
         hbox.addWidget(self.message_box)
         hbox.addWidget(channel_type_label)
         hbox.addWidget(self.channel_type_combo)
-        hbox.addWidget(message_btn)
+        hbox.addWidget(self.message_btn)
         hbox.addWidget(self.channel_control_btn)
-
-        form_layout = QFormLayout()
         form_layout.addRow(hbox)
+
+        hbox = QHBoxLayout()
+        self.client_message_browser = QTextBrowser()
+        
+
+
+        
         self.setLayout(form_layout)
         self.setWindowTitle(f"{self.title} {self.version}")
 
@@ -133,11 +141,13 @@ class CovertChannelGui(QWidget):
         if self.active:
             self.stop_channel()
             self.channel_control_btn.setText("Start")
+            self.message_btn.setDisabled(True)
             self.active = False
             print("Channel stopped")
         else:
             self.start_channel()
             self.channel_control_btn.setText("Stop")
+            self.message_btn.setDisabled(False)
             self.active = True
             print("Channel started")
     
