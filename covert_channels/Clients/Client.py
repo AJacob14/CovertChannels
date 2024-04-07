@@ -1,19 +1,27 @@
 from __future__ import annotations
 
-import sys
-import time
 import errno
-import socket
 import random
+import socket
 import string
-from typing import Iterator
+import time
 from abc import ABC, abstractmethod
+from typing import Iterator
 
 from scapy.packet import Packet
 
 
 class Client(ABC):
+    """
+        Abstract class for a covert channel client that sends data to a server.
+    """
+
     def __init__(self, target_ip: str, target_port: int):
+        """
+            Initialize the client with the target IP and port.
+        :param target_ip: Ip address of the covert channel server
+        :param target_port: Port of the covert channel server
+        """
         self.ip: str = target_ip
         self.port: int = target_port
         self.base_wait: float = 0.1
@@ -21,15 +29,23 @@ class Client(ABC):
 
     @abstractmethod
     def send(self, data: bytes):
+        """
+            Send data to the server
+        :param data: Bytes to covertly send
+        """
         raise NotImplementedError
 
     def wait(self):
+        """
+            Wait for a random amount of time
+        """
         time.sleep(self.base_wait + (self.jitter * random.random()))
 
-    def _get_free_port(self) -> int:
+    @staticmethod
+    def _get_free_port() -> int:
         """
-            Get a free port to use for sending data. This avoid other processes receiving the 
-            response to the sent packet. This implementation would not be used in a real world 
+            Get a free port to use for sending data. This avoids other processes receiving the
+            response to the transmitted packet. This implementation would not be used in a real world
             scenario as it generates noise by potentially binding to multiple ports and used ports.
         :return: A currently unused port number
         """
@@ -60,17 +76,28 @@ class Client(ABC):
             yield packet
 
     @staticmethod
-    def generate_random_string(length: int):
+    def generate_random_string(length: int) -> str:
+        """
+            Generate a random string of the given length
+        :param length: Length of the string to generate
+        :return: The randomly generated string
+        """
         characters = string.ascii_letters + string.digits
         random_string = "".join(random.choices(characters, k=length))
         return random_string
-    
+
     @staticmethod
     def _get_short(data: bytes, offset: int) -> int:
+        """
+            Get a short from the data at the given offset
+        :param data: Sequence of bytes to extract the short from
+        :param offset: Offset to start extracting the short from
+        :return: The short extracted from the data
+        """
         higher = data[offset] << 8
         lower = data[offset + 1]
         return higher | lower
-        #return int.from_bytes(data[offset:offset + 2], byteorder=sys.byteorder)
+
 
 if __name__ == "__main__":
     pass

@@ -2,16 +2,18 @@ from __future__ import annotations
 
 import socket
 from abc import ABC
-from threading import Thread
 from typing import Iterator
 
-from scapy.packet import Packet
 from pydivert import WinDivert
+from scapy.packet import Packet
 
 from covert_channels.Servers.Server import Server
 
 
 class SocketServer(Server, ABC):
+    """
+        Abstract class for socket-based servers.
+    """
     def __init__(self, ip: str, port: int, type_: int):
         super().__init__(ip, port)
         self.type: int = type_
@@ -67,14 +69,6 @@ class SocketServer(Server, ABC):
             packet = packet.payload
             yield packet
 
-    def _drop_outbound_rst(self):
-        with WinDivert("outbound and tcp.Rst") as w:
-            for _ in w:
-                if not self._server_started:
-                    break   # This only works after the server is bound
-                pass
-                #print("Dropped a packet with RST flag")
-                # The packet is dropped by not re-injecting it.
 
 if __name__ == "__main__":
     pass

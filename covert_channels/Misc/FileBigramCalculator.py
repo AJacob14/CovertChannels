@@ -1,7 +1,14 @@
+"""
+    This script reads a file or all files in a directory and calculates the frequency of each bigram in the file(s).
+    The purpose of this script is to see how often each bigram would correspond to a low port number in a port-based
+    covert channel. This script is just for research purposes and is not used in the covert channel implementation.
+"""
+
 import sys
 import json
 from datetime import datetime
 from pathlib import Path
+
 
 def main(given_path: str):
     path = Path(given_path)
@@ -9,7 +16,7 @@ def main(given_path: str):
         files = [path]
     else:
         files = list(path.rglob("*"))
-    
+
     bigrams: dict[str, int] = {}
     for file in files:
         try:
@@ -19,7 +26,7 @@ def main(given_path: str):
             print(f"Error reading file {file}: {e}")
             continue
         for i in range(len(data) - 1):
-            bigram = data[i:i+2]
+            bigram = data[i:i + 2]
             bigram_str = bigram.hex()
             if bigram_str in bigrams:
                 bigrams[bigram_str] += 1
@@ -31,6 +38,7 @@ def main(given_path: str):
     out_file = out_path / f"{datetime.now().isoformat().replace(':', '-')}.json"
     with out_file.open("w") as f:
         json.dump(bigrams, f, indent=4)
+
 
 if __name__ == "__main__":
     main(sys.argv[1])

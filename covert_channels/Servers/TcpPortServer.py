@@ -1,6 +1,9 @@
-from __future__ import annotations
+"""
+    This module is responsible for receiving data covertly using the TCP source port number. The data being received is
+    decoded from the source port number of the TCP header.
+"""
 
-import sys
+from __future__ import annotations
 
 from scapy.all import *
 from scapy.layers.inet import IP, TCP
@@ -9,6 +12,9 @@ from covert_channels.Servers.SocketServer import SocketServer
 
 
 class TcpPortServer(SocketServer):
+    """
+        A covert channel server that receives data through the TCP source port number.
+    """
     def __init__(self, ip: str, port: int):
         super().__init__(ip, port, socket.SOCK_RAW)
 

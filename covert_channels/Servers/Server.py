@@ -7,7 +7,7 @@ from threading import Thread
 
 class Server(ABC):
     """
-        Base class for all covert channel servers
+        Abstract base class for all covert channel servers
     """
 
     def __init__(self, ip: str, port: int):

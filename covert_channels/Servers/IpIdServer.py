@@ -1,19 +1,26 @@
-from __future__ import annotations
+"""
+    This module is responsible for receiving data covertly using the IP ID field. The data being sent is encoded as the
+    ID field of the IP header.
+"""
 
-import sys
-import socket
+from __future__ import annotations
 
 from scapy.all import *
 from scapy.layers.inet import IP, TCP
 
 from covert_channels.Servers.SocketServer import SocketServer
 
+
 class IpIdServer(SocketServer):
+    """
+        A covert channel server that receives data through the IP ID field.
+    """
+
     def __init__(self, ip: str, port: int):
         super().__init__(ip, port, socket.SOCK_STREAM)
         self.connection: socket.socket = None
         self.address: tuple[str, int] = ("", 0)
-    
+
     def _server_config(self):
         self.server.listen()
 
@@ -36,6 +43,7 @@ class IpIdServer(SocketServer):
             sent_bytes = layers[0].id.to_bytes(2, byteorder=sys.byteorder)
             buffer += sent_bytes
         return bytes(buffer)
-    
+
+
 if __name__ == "__main__":
     pass

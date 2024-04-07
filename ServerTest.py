@@ -1,12 +1,12 @@
-import socket
+"""
+    Test the various covert channels servers.
+"""
 
-from scapy.all import *
-
-from covert_channels.Servers import TcpPortServer, UdpPortServer, HttpServer, IpIdServer
+from covert_channels.Servers import IpIdServer
 
 
 def main():
-    server = IpIdServer("127.0.0.1", 42069)
+    server = IpIdServer("127.0.0.1", 31337)
     with server:
         print("Waiting for data...")
         data = server.receive()

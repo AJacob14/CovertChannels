@@ -1,7 +1,10 @@
+"""
+    This module is responsible for sending data covertly using the IP ID field. The data being sent is encoded as the
+    ID field of the IP header.
+"""
+
 from __future__ import annotations
 
-import socket
-import random
 from enum import IntEnum
 
 from scapy.all import *
@@ -9,13 +12,21 @@ from scapy.layers.inet import IP, TCP
 
 from covert_channels.Clients.Client import Client
 
+
 class ConnectionState(IntEnum):
+    """
+        Enum for the connection state.
+    """
     START = 0
     SYN_SENT = 1
     ESTABLISHED = 2
     CLOSING = 3
 
+
 class IpIdClient(Client):
+    """
+        A covert channel client that sends data through the IP ID field.
+    """
     def __init__(self, target_ip: str, target_port: int):
         super().__init__(target_ip, target_port)
 
@@ -25,6 +36,7 @@ class IpIdClient(Client):
         dummy.bind(("localhost", port))
         sock = StreamSocket(dummy)
         data_len = len(data)
+        # Pad the data if it is not an even number of bytes
         if data_len % 2 != 0:
             data += b"\x00"
             data_len += 1
@@ -37,14 +49,14 @@ class IpIdClient(Client):
             sock.send(packet)
         sock.close()
 
+    # Work in progress implementation for manually handling the TCP handshake
     def send2(self, data: bytes):
         port = self._get_free_port()
         dummy = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         dummy.bind(("0.0.0.0", port))
-        sock = StreamSocket(dummy)
         data_len = len(data)
         state: ConnectionState = ConnectionState.START
-        seq = random.randint(0, 2**32 - 1)
+        seq = random.randint(0, 2 ** 32 - 1)
         ack = 0
         if data_len % 2 != 0:
             data += b"\x00"
@@ -81,8 +93,9 @@ class IpIdClient(Client):
                 pass
             if state == ConnectionState.ESTABLISHED:
                 self.wait()
-        
+
         dummy.close()
+
 
 if __name__ == "__main__":
     pass

@@ -23,14 +23,26 @@ from covert_channels.UserInterface import ClientServer, ClientServerType, Config
 from covert_channels.Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
 from covert_channels.Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
 
+
 def create_button(label: str, width: int = 150, height: int = 25) -> QPushButton:
+    """
+        Creates a QPushButton with the specified label, width, and height.
+    :param label: Label of the button.
+    :param width: Width of the button.
+    :param height: Height of the button.
+    :return: Constructed QPushButton object.
+    """
     btn = QPushButton(label)
     btn.setFont(QFont("Arial", 12))
     btn.setFixedWidth(width)
     btn.setFixedHeight(height)
     return btn
 
+
 class CovertChannelGui(QWidget):
+    """
+        This class represents the main GUI window for the covert channel application.
+    """
     def __init__(self, parent: QWidget | None = None):
         super().__init__(parent)
 
@@ -85,10 +97,7 @@ class CovertChannelGui(QWidget):
 
         hbox = QHBoxLayout()
         self.client_message_browser = QTextBrowser()
-        
 
-
-        
         self.setLayout(form_layout)
         self.setWindowTitle(f"{self.title} {self.version}")
 
@@ -106,20 +115,30 @@ class CovertChannelGui(QWidget):
             self.client_server.active = value
 
     def closeEvent(self, event: QtGui.QCloseEvent | None):
+        """
+            Overridden method to handle the close event of the GUI window.
+        :param event: Close event data
+        """
         if self.active:
             self.stop_channel()
-        
+
         self.config.save_config()
 
         return super().closeEvent(event)
 
     def initialize(self):
+        """
+            Initializes the GUI window with the configuration settings.
+        """
         self.ip = self.config.ip
         self.port = self.config.port
         self.client_server = ClientServer(self.ip, self.port, self.config.type)
         self.channel_type_combo.setCurrentIndex(self.config.type.value)
 
     def send_message(self):
+        """
+            Sends the message to the server through the covert channel.
+        """
         if not self.active:
             return
 
@@ -134,10 +153,17 @@ class CovertChannelGui(QWidget):
         self.message_box.clear()
 
     def change_channel_type(self, index: int):
+        """
+            Changes the channel type based on the selected item in the combo box.
+        :param index: Index of the selected item.
+        """
         self.config.type = ClientServerType(index)
         self.client_server = ClientServer(self.ip, self.port, self.config.type)
 
     def toggle_channel_activeness(self):
+        """
+            Toggles the activeness of the channel based on the current state.
+        """
         if self.active:
             self.stop_channel()
             self.channel_control_btn.setText("Start")
@@ -150,22 +176,32 @@ class CovertChannelGui(QWidget):
             self.message_btn.setDisabled(False)
             self.active = True
             print("Channel started")
-    
+
     def start_channel(self):
+        """
+            Starts the covert channel client and server.
+        """
         if self.active:
             return
-        
+
         self.channel_type_combo.setEnabled(False)
         self.client_server.start()
 
     def stop_channel(self):
+        """
+            Stops the covert channel client and server.
+        """
         if not self.active:
             return
-        
+
         self.channel_type_combo.setEnabled(True)
         self.client_server.stop()
 
+
 def run_gui():
+    """
+        Runs the covert channel GUI application.
+    """
     app = QApplication(sys.argv)
     window = CovertChannelGui()
 
@@ -173,6 +209,7 @@ def run_gui():
 
     window.show()
     sys.exit(app.exec())
+
 
 if __name__ == "__main__":
     run_gui()
