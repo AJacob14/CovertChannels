@@ -42,7 +42,7 @@ class ClientServer:
 
     def __construct_client_server(self, ip: str, port: int, type_: ClientServerType):
         """
-            Constructs the client and server objects based on the type of covert channel.
+            Construct the client and server objects based on the type of covert channel.
         :param ip: IP address of the server.
         :param port: Port number of the server.
         :param type_: Type of covert channel to use.
@@ -63,7 +63,7 @@ class ClientServer:
 
     def start(self):
         """
-            Starts the client and server processes.
+            Start the client and server processes.
         """
         self.client_process = Process(target=ClientServer._client_process, args=(self.client_queue, self.client))
         self.server_process = Process(target=ClientServer._server_process, args=(self.server_queue, self.server))
@@ -72,7 +72,7 @@ class ClientServer:
 
     def stop(self):
         """
-            Stops the client and server processes through forceful termination.
+            Stop the client and server processes through forceful termination.
         """
         self.client_process.terminate()
         self.server_process.terminate()
@@ -97,10 +97,10 @@ class ClientServer:
         :param client: The client object that will be used to communicate covertly with the server.
         """
         while True:
-            message = queue.get()
+            message = queue.get()           # Receive message from main process
             if isinstance(message, str):
-                message = message.encode()
-            client.send(message)
+                message = message.encode()  # Convert message to bytes
+            client.send(message)            # Send message to server
 
     @staticmethod
     def _server_process(queue: Queue, server: Server):
@@ -111,8 +111,8 @@ class ClientServer:
         """
         with server:
             while True:
-                data = server.receive()
-                queue.put(data)
+                data = server.receive()    # Receive data from client
+                queue.put(data)            # Send data to main process
 
 
 class ClientServerType(IntEnum):

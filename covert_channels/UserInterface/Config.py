@@ -31,7 +31,7 @@ class Config(metaclass=Singleton):
 
     def __initialize(self):
         """
-            Initializes the configuration object with saved values or default values.
+            Initialize the configuration object with saved values or default values.
         """
         if os.path.exists(self.CONFIG_PATH):
             self.__load_config()
@@ -40,7 +40,7 @@ class Config(metaclass=Singleton):
 
     def __load_config(self):
         """
-            Loads the configuration from the config file.
+            Load the configuration from the config file.
         """
         with open(self.CONFIG_PATH, "r") as file:
             config = json.load(file)
@@ -50,7 +50,7 @@ class Config(metaclass=Singleton):
 
     def __create_default_config(self):
         """
-            Creates a default configuration file by setting the default values.
+            Create a default configuration file by setting the default values.
         """
         self.ip = "127.0.0.1"
         self.port = 31337
@@ -58,7 +58,7 @@ class Config(metaclass=Singleton):
 
     def save_config(self):
         """
-            Saves the configuration to the config file.
+            Save the configuration to the config file.
         """
         with open(self.CONFIG_PATH, "w") as file:
             json.dump({
