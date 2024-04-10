@@ -28,12 +28,12 @@ class UdpPortClient(Client):
             if val < 1024:
                 print("Potential risk of using a low port!")
             udp = UDP(dport=self.port, sport=val)
-            packet = ip / udp / Raw(load="----")
+            packet = ip / udp / Raw(load=self.generate_random_string(10))
             print(packet)
             send(packet)
             self.wait()
         udp = UDP(dport=self.port, sport=self.port)
-        packet = ip / udp / Raw(load="----")
+        packet = ip / udp / Raw(load=self.generate_random_string(10))
         print(packet)
         send(packet)
 

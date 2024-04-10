@@ -4,10 +4,12 @@ import errno
 import random
 import socket
 import string
+import threading
 import time
 from abc import ABC, abstractmethod
 from typing import Iterator
 
+from pydivert import WinDivert
 from scapy.packet import Packet
 
 
@@ -26,6 +28,7 @@ class Client(ABC):
         self.port: int = target_port
         self.base_wait: float = 0.1
         self.jitter: float = 0.1
+        self.__droppping_rst_packets: bool = False
 
     @abstractmethod
     def send(self, data: bytes):
@@ -98,6 +101,31 @@ class Client(ABC):
         lower = data[offset + 1]
         return higher | lower
 
+    def _drop_rst_packets(self):
+        """
+            Drop outgoing RST packets
+        """
+        with WinDivert("outbound and tcp.Rst") as w:
+            for _ in w:
+                # Drop the packet by not re-injecting it
+                if not self.__droppping_rst_packets:
+                    break
+    
+    def _start_dropping_rst_packets(self):
+        """
+            Start dropping outgoing RST packets
+        """
+        if self.__droppping_rst_packets:
+            return
+        self.__droppping_rst_packets = True
+        thread = threading.Thread(target=self._drop_rst_packets)
+        thread.start()
+    
+    def _stop_dropping_rst_packets(self):
+        """
+            Stop dropping outgoing RST packets
+        """
+        self.__droppping_rst_packets = False
 
 if __name__ == "__main__":
     pass
