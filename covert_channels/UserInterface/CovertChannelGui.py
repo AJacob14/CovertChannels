@@ -22,6 +22,7 @@ from qt_material import apply_stylesheet
 from covert_channels.UserInterface import ClientServer, ClientServerType, Config
 from covert_channels.Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
 from covert_channels.Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
+from covert_channels.UserInterface.MessageVisualization import visualize_ip
 
 
 def create_button(label: str, width: int = 150, height: int = 25) -> QPushButton:
@@ -97,6 +98,8 @@ class CovertChannelGui(QWidget):
 
         hbox = QHBoxLayout()
         self.client_message_browser = QTextBrowser()
+        self.client_message_browser.setReadOnly(True)
+        form_layout.addRow(self.client_message_browser)
 
         self.setLayout(form_layout)
         self.setWindowTitle(f"{self.title} {self.version}")
@@ -151,6 +154,10 @@ class CovertChannelGui(QWidget):
         print(f"Sent: {message}")
         print(f"Received: {response}")
         self.message_box.clear()
+        visualized_message = visualize_ip(response)
+        for header in visualized_message:
+            self.client_message_browser.append(header)
+            print(header)
 
     def change_channel_type(self, index: int):
         """
