@@ -22,7 +22,7 @@ from qt_material import apply_stylesheet
 from covert_channels.UserInterface import ClientServer, ClientServerType, Config
 from covert_channels.Clients import Client, HttpClient, IpIdClient, TcpPortClient, UdpPortClient
 from covert_channels.Servers import Server, HttpServer, IpIdServer, TcpPortServer, UdpPortServer
-from covert_channels.UserInterface.MessageVisualization import visualize_ip
+from covert_channels.UserInterface.MessageVisualization import visualize_http, visualize_ip, visualize_tcp, visualize_udp
 
 
 def create_button(label: str, width: int = 150, height: int = 25) -> QPushButton:
@@ -98,7 +98,12 @@ class CovertChannelGui(QWidget):
 
         hbox = QHBoxLayout()
         self.client_message_browser = QTextBrowser()
+        font = QFont("Monospace")
+        font.setFamily("Monospace")
+        font.setStyleHint(QFont.StyleHint.TypeWriter)
+        self.client_message_browser.setFont(font)
         self.client_message_browser.setReadOnly(True)
+        self.client_message_browser.setTextColor(QColor("black"))
         form_layout.addRow(self.client_message_browser)
 
         self.setLayout(form_layout)
@@ -150,14 +155,35 @@ class CovertChannelGui(QWidget):
             return
 
         data = message.encode()
+        self.visualize_message(data)
         response = self.client_server.send(data)
         print(f"Sent: {message}")
         print(f"Received: {response}")
         self.message_box.clear()
-        visualized_message = visualize_ip(response)
+
+    def visualize_message(self, data: bytes):
+        """
+            Visualizes the message in the client message browser.
+        :param data: Data to visualize
+        """
+        
+        block_based = True
+        match self.config.type:
+            case ClientServerType.IP_ID:
+                visualized_message = visualize_ip(data)
+            case ClientServerType.TCP_PORT:
+                visualized_message = visualize_tcp(data)
+            case ClientServerType.UDP_PORT:
+                visualized_message = visualize_udp(data)
+            case ClientServerType.HTTP:
+                block_based = False
+                visualized_message = visualize_http(data)
+    
         for header in visualized_message:
-            self.client_message_browser.append(header)
-            print(header)
+            if block_based:
+                self.client_message_browser.append(f"<pre style='color: black;'>{header}</pre>")
+            else:
+                self.client_message_browser.append(header)
 
     def change_channel_type(self, index: int):
         """
