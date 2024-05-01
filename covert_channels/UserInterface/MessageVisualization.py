@@ -103,8 +103,10 @@ def visualize_http(msg: bytes):
     requests = []
     requests.append("POST /login HTTP/1.1")
     for b in msg:
-        request = HTTP_ENDPOINTS[b]
-        requests.append(f"GET /{request} HTTP/1.1")
+        for i in range(2):
+            nibble = (b >> (4 * i)) & 0x0F
+            request = HTTP_ENDPOINTS[nibble]
+            requests.append(f"GET /{request} HTTP/1.1")
     requests.append("POST /logout HTTP/1.1")
     return requests
 

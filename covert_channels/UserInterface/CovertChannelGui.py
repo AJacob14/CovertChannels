@@ -155,10 +155,12 @@ class CovertChannelGui(QWidget):
             return
 
         data = message.encode()
+        print(f"Sent: {message}")
+        self.client_message_browser.append(f"<pre style='color: black;'>Sending: {message}</pre>")
         self.visualize_message(data)
         response = self.client_server.send(data)
-        print(f"Sent: {message}")
         print(f"Received: {response}")
+        self.client_message_browser.append(f"<pre style='color: black;'>Received: {response.decode()}</pre>")
         self.message_box.clear()
 
     def visualize_message(self, data: bytes):
@@ -167,7 +169,6 @@ class CovertChannelGui(QWidget):
         :param data: Data to visualize
         """
         
-        block_based = True
         match self.config.type:
             case ClientServerType.IP_ID:
                 visualized_message = visualize_ip(data)
@@ -176,14 +177,10 @@ class CovertChannelGui(QWidget):
             case ClientServerType.UDP_PORT:
                 visualized_message = visualize_udp(data)
             case ClientServerType.HTTP:
-                block_based = False
                 visualized_message = visualize_http(data)
     
         for header in visualized_message:
-            if block_based:
                 self.client_message_browser.append(f"<pre style='color: black;'>{header}</pre>")
-            else:
-                self.client_message_browser.append(header)
 
     def change_channel_type(self, index: int):
         """
