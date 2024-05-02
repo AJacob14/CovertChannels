@@ -18,7 +18,7 @@ def visualize_ip(msg: bytes) -> list[str]:
 
 def print_ip_header(id_: int) -> str:
     """
-        Prints the IP header.
+        Creates a string representations of the IP header.
     :param id_: Id of the IP header
     :return: String representation of the IP header
     """
@@ -51,7 +51,7 @@ def visualize_tcp(msg: bytes) -> list[str]:
 
 def print_tcp_header(port: int) -> str:
     """
-        Prints the TCP header.
+        Creates a string representations of the TCP header.
     :param port: Source port of the TCP header
     :return: String representation of the TCP header
     """
@@ -83,7 +83,7 @@ def visualize_udp(msg: bytes):
 
 def print_udp_header(port: int) -> str:
     """
-        Prints the UDP header.
+        Creates a string representations of the UDP header.
     :param port: Port to visualize
     :return: String representation of the UDP header
     """
